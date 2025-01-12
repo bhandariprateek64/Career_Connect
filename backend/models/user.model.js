@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
     },
     profile: {
       bio: { type: String },
-      skills: { type: String },
+      skills: [{ type: String }],
       resume: { type: String }, //URL to the resume
       resumeOriginalName: { type: String },
       company: {
@@ -40,5 +40,5 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-const userModel = userSchema.model('User', userSchema);
+const userModel = mongoose.model('User', userSchema);
 export default userModel;
