@@ -87,7 +87,6 @@ userRouter.post('/register', singleUpload, async (req, res) => {
     });
   }
 });
-
 userRouter.post('/login', async (req, res) => {
   try {
     const { email, password, role } = req.body;
