@@ -15,23 +15,21 @@ import { setUser } from '@/redux/authSlice';
 import axios from 'axios';
 
 const Navbar = () => {
-  const { user } = useSelector((store) => store.auth); // Change this to `true` to test the logged-in state
+  const { user } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const logoutHandler = async () => {
     try {
       const res = await axios.get(`${USER_API_ENDPOINT}/logout`, {
-        withCredentials: true, // Ensures cookies are sent
+        withCredentials: true,
       });
       if (res.data.success) {
-        dispatch(setUser(null)); // Clear user state
-        navigate('/'); // Redirect to home page
-        toast.success(res.data.message); // Show success toast
+        dispatch(setUser(null));
+        navigate('/');
+        toast.success(res.data.message);
       }
     } catch (error) {
-      console.log(error);
-
-      // Use optional chaining and fallback message to handle undefined values
       const errorMessage =
         error?.response?.data?.message || 'Logout failed. Try again.';
       toast.error(errorMessage);
@@ -48,6 +46,7 @@ const Navbar = () => {
             </h1>
           </Link>
         </div>
+
         <div className="flex items-center gap-12">
           <ul className="flex font-medium items-center gap-5">
             {user && user.role === 'recruiter' ? (
@@ -56,35 +55,48 @@ const Navbar = () => {
                   <Link to="/admin/companies">Companies</Link>
                 </li>
                 <li>
-                  {' '}
                   <Link to="/admin/jobs">Jobs</Link>
                 </li>
               </>
             ) : (
               <>
-                {' '}
                 <li>
                   <Link to="/">Home</Link>
                 </li>
                 <li>
-                  {' '}
                   <Link to="/jobs">Jobs</Link>
                 </li>
                 <li>
-                  {' '}
                   <Link to="/browse">Browse</Link>
                 </li>
               </>
             )}
           </ul>
+
           {!user ? (
-            <div className="flex gap-4">
+            <div className="flex gap-4 items-center">
+              {/* New Buttons */}
+              <a
+                href="https://interview-prep-front.vercel.app/"
+                target="_blank"
+              >
+                <Button variant="outline">Interview Prep</Button>
+              </a>
+
+              <a
+                href="https://iurd4upvokss2kjdazhaxd.streamlit.app/"
+                target="_blank"
+              >
+                <Button variant="outline">Skill Gap</Button>
+              </a>
+
+              {/* Login / Signup */}
               <Link to="/login">
                 <Button variant="outline">Login</Button>
               </Link>
 
               <Link to="/signup">
-                <Button className="bg-[#6A38C2] hover: bg-[#5b30a6]">
+                <Button className="bg-[#6A38C2] hover:bg-[#5b30a6]">
                   Signup
                 </Button>
               </Link>
@@ -96,7 +108,7 @@ const Navbar = () => {
                   <AvatarImage
                     src={
                       user?.profile?.profilePhoto ||
-                      'https://imgs.search.brave.com/k82fYyuT2CK_tkdTpJpv2PtvHVT1FcPS5OgFkeYuVbY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzA5LzQzLzM2LzU3/LzM2MF9GXzk0MzM2/NTcxN19IMEduZmVZ/ajA3ZDRvVjF4UHo4/V0hTWmdjdmdGb1pk/Vy5qcGc'
+                      'https://imgs.search.brave.com/k82fYyuT2CK_tkdTpJpv2PtvHVT1FcPS5OgFkeYuVbY/...'
                     }
                     alt="@shadcn"
                   />
@@ -104,13 +116,12 @@ const Navbar = () => {
               </PopoverTrigger>
               <PopoverContent className="w-80">
                 <div className="flex gap-2 space-y-2">
-                  <Avatar className="cursor-pointer">
+                  <Avatar>
                     <AvatarImage
                       src={
                         user?.profile?.profilePhoto ||
-                        'https://imgs.search.brave.com/k82fYyuT2CK_tkdTpJpv2PtvHVT1FcPS5OgFkeYuVbY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzA5LzQzLzM2LzU3/LzM2MF9GXzk0MzM2/NTcxN19IMEduZmVZ/ajA3ZDRvVjF4UHo4/V0hTWmdjdmdGb1pk/Vy5qcGc'
+                        'https://imgs.search.brave.com/k82fYyuT2CK_tkdTpJpv2PtvHVT1FcPS5OgFkeYuVbY/...'
                       }
-                      alt="@shadcn"
                     />
                   </Avatar>
                   <div>
@@ -120,8 +131,9 @@ const Navbar = () => {
                     </p>
                   </div>
                 </div>
+
                 <div className="flex flex-col text-gray-600">
-                  {user && user.role === 'student' && (
+                  {user.role === 'student' && (
                     <div className="flex items-center gap-2 cursor-pointer">
                       <User2 />
                       <Button variant="link">
